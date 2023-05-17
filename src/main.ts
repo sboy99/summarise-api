@@ -4,6 +4,8 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { AllExceptionsFilter } from '@/filters';
 import * as morgan from 'morgan';
+import { AccessKeyGuard } from './guards/access-key.guard';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -17,6 +19,8 @@ async function bootstrap() {
   // filters
   const httpAdapter = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
+  // access key guard
+  app.useGlobalGuards(new AccessKeyGuard(app.get(ConfigService)));
   // logging
   app.use(morgan('dev'));
   // versioning
