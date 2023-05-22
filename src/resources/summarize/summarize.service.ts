@@ -34,7 +34,7 @@ export class SummarizeService {
     return {
       message: 'Success',
       status: HttpStatus.OK,
-      data: answer,
+      data: answer.trim(),
     };
   }
 
